@@ -9,11 +9,9 @@ namespace NumericalMethods.Lab1
             Function18 = x => Math.Pow(Math.Cos(x), 3) + Math.Pow(x, 3) * Math.Exp(x) - Math.Pow(x, 6) - 35;
         private static readonly Func<double, double>
             Function31 = x => Math.Pow(x, 3) * Math.Cosh(x) + Math.PI - 9 * Math.PI * x;
-        private static readonly Func<double, double>
-            Phi31 = x => (Math.Pow(x, 3) * Math.Cosh(x) + Math.PI) / (9 * Math.PI);
 
-        private static double _startOfIntervalValue;
-        private static double _endOfIntervalValue;
+        private static double _startOfInterval;
+        private static double _endOfInterval;
         private static double? _precision;
 
         public static void Run()
@@ -31,16 +29,16 @@ namespace NumericalMethods.Lab1
                     var intervalInput = Console.ReadLine();
                     var interval = intervalInput.Split(" ");
 
-                    if (!double.TryParse(interval[0], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var firstNum)
-                        || !double.TryParse(interval[1], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var secondNum)
+                    if (!double.TryParse(interval[0], out var firstNum)
+                        || !double.TryParse(interval[1], out var secondNum)
                         || firstNum > secondNum)
                     {
                         ProgressInfoPrinter.PrintInputIsIncorrect(intervalInput);
                         continue;
                     }
 
-                    _startOfIntervalValue = firstNum;
-                    _endOfIntervalValue = secondNum;
+                    _startOfInterval = firstNum;
+                    _endOfInterval = secondNum;
                     break;
                 }
 
@@ -67,13 +65,13 @@ namespace NumericalMethods.Lab1
                 switch (startMenuUserInput)
                 {
                     case "1":
-                        method = new SimplifiedNewtonsMethod(Function18, _startOfIntervalValue, _endOfIntervalValue, _precision);
+                        method = new SimplifiedNewtonsMethod(Function18, _startOfInterval, _endOfInterval, _precision);
                         break;
                     case "2":
-                        method = new BisectionMethod(Function31, _startOfIntervalValue, _endOfIntervalValue, _precision);
+                        method = new BisectionMethod(Function31, _startOfInterval, _endOfInterval, _precision);
                         break;
                     case "3":
-                        method = new SimpleIterationMethod(Phi31, _startOfIntervalValue, _endOfIntervalValue, _precision);
+                        method = new SimpleIterationMethod(Function31, _startOfInterval, _endOfInterval, _precision);
                         break;
                     case "4":
                         RunLobachevskyiMethod();

@@ -21,6 +21,11 @@ namespace NumericalMethods.Lab1
         public abstract void CalculateNewIntervalValues(int counter);
         public abstract bool CheckMethodStopCriteria();
 
+        public virtual double CalculateResult()
+        {
+            return (_startOfInterval + _endOfInterval) / 2;
+        }
+
         public virtual double? GetRoot()
         {
             if (!CheckIsMonotonous())
@@ -44,7 +49,7 @@ namespace NumericalMethods.Lab1
                 counter++;
             }
 
-            return (_startOfInterval + _endOfInterval) / 2;
+            return CalculateResult();
         }
 
         protected bool CheckSimplifiedStopCriteria()
@@ -62,7 +67,7 @@ namespace NumericalMethods.Lab1
             return _function(startOfInterval) * _function(endOfInterval) < 0;
         }
 
-        private bool CheckIsMonotonous()
+        protected bool CheckIsMonotonous()
         {
             var step = 0.0001;
             var grows = _function(_startOfInterval) < _function(_startOfInterval + step);
