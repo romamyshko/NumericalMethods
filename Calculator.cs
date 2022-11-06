@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Collections;
 using System.Globalization;
 
 namespace NumericalMethods.Lab1
 {
     public static class Calculator
     {
+        private static readonly double[] Coefficients = {18.0, 84.0, -225.0, -811.0, 565.0, 842.0, -489.0};
+
         private static readonly Func<double, double>
             Function18 = x => Math.Pow(Math.Cos(x), 3) + Math.Pow(x, 3) * Math.Exp(x) - Math.Pow(x, 6) - 35;
         private static readonly Func<double, double>
             Function31 = x => Math.Pow(x, 3) * Math.Cosh(x) + Math.PI - 9 * Math.PI * x;
+
+        private static readonly Func<double, double>
+            FunctionLb = x => Coefficients[0] * Math.Pow(x, 7) + Coefficients[1] * Math.Pow(x, 6) + 
+                              Coefficients[2] * Math.Pow(x, 5) + Coefficients[3] * Math.Pow(x, 4) + 
+                              Coefficients[4] * Math.Pow(x, 3) + Coefficients[5] * Math.Pow(x, 2) + 
+                              Coefficients[6] * Math.Pow(x, 1);
 
         private static double _startOfInterval;
         private static double _endOfInterval;
@@ -18,6 +27,7 @@ namespace NumericalMethods.Lab1
         {
             while (true)
             {
+                RunLobachevskyiMethod();
                 ProgressInfoPrinter.PrintStartMenuOptions();
 
                 var startMenuUserInput = Console.ReadLine();
@@ -97,7 +107,8 @@ namespace NumericalMethods.Lab1
 
         public static void RunLobachevskyiMethod()
         {
-            throw new NotImplementedException();
+            var lbMethod = new LobachevskyiMethod(FunctionLb, Coefficients, _precision);
+            var res = lbMethod.GetRoots();
         }
 
         public static void PrintResult(MethodBase method)
