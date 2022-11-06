@@ -5,7 +5,7 @@ using Accord.IO;
 
 namespace NumericalMethods.Lab1
 {
-    public sealed class LobachevskyiMethod
+    public sealed class LobachevskyiMethod : IMethod
     {
         private readonly Func<double, double> _func;
 
@@ -31,8 +31,8 @@ namespace NumericalMethods.Lab1
 
             for (var i = 0; i < _roots.Count; i++)
             {
-                var bisectionMethod = new SimplifiedNewtonsMethod(_func, _roots[i] - 0.1, _roots[i] + 0.1, _epsilon);
-                _roots[i] = bisectionMethod.GetRoot() ?? Double.NaN;
+                var bisectionMethod = new BisectionMethod(_func, _roots[i] - 0.1, _roots[i] + 0.1, _epsilon);
+                _roots[i] = bisectionMethod.GetRoots().First();
             }
 
             return _roots;

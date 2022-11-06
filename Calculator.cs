@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Globalization;
+using System.Linq;
 
 namespace NumericalMethods.Lab1
 {
@@ -27,13 +27,14 @@ namespace NumericalMethods.Lab1
         {
             while (true)
             {
-                RunLobachevskyiMethod();
                 ProgressInfoPrinter.PrintStartMenuOptions();
 
                 var startMenuUserInput = Console.ReadLine();
 
                 while (true)
                 {
+                    if (startMenuUserInput.Equals("4")) break;
+
                     ProgressInfoPrinter.PrintIntervalQuery();
 
                     var intervalInput = Console.ReadLine();
@@ -70,7 +71,7 @@ namespace NumericalMethods.Lab1
                     break;
                 }
 
-                MethodBase method = null;
+                IMethod method;
 
                 switch (startMenuUserInput)
                 {
@@ -84,7 +85,7 @@ namespace NumericalMethods.Lab1
                         method = new SimpleIterationMethod(Function31, _startOfInterval, _endOfInterval, _precision);
                         break;
                     case "4":
-                        RunLobachevskyiMethod();
+                        method = new LobachevskyiMethod(FunctionLb, Coefficients, _precision);
                         break;
                     case "exit":
                         return;
@@ -105,18 +106,20 @@ namespace NumericalMethods.Lab1
             }
         }
 
-        public static void RunLobachevskyiMethod()
+        public static void PrintResult(IMethod method)
         {
-            var lbMethod = new LobachevskyiMethod(FunctionLb, Coefficients, _precision);
-            var res = lbMethod.GetRoots();
-        }
+            var roots = method.GetRoots().ToList();
 
-        public static void PrintResult(MethodBase method)
-        {
-            var root = method?.GetRoot();
+            if (roots.Count > 1)
+            {
+                roots.Add(0.0);
+                roots.Sort();
+            }
 
-            if (root != null)
+            foreach (var root in roots)
+            {
                 ProgressInfoPrinter.PrintMethodResult(root);
+            }
         }
     }
 }

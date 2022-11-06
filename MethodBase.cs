@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NumericalMethods.Lab1
 {
-    public abstract class MethodBase
+    public abstract class MethodBase : IMethod
     {
         protected readonly Func<double, double> _function;
         protected readonly double? _epsilon;
@@ -21,12 +22,7 @@ namespace NumericalMethods.Lab1
         public abstract void CalculateNewIntervalValues(int counter);
         public abstract bool CheckMethodStopCriteria();
 
-        public virtual double CalculateResult()
-        {
-            return (_startOfInterval + _endOfInterval) / 2;
-        }
-
-        public virtual double? GetRoot()
+        public IEnumerable<double> GetRoots()
         {
             if (!CheckIsMonotonous())
             {
@@ -39,7 +35,7 @@ namespace NumericalMethods.Lab1
                 ProgressInfoPrinter.PrintRootCheckFailed();
                 return null;
             }
-                
+
             ProgressInfoPrinter.PrintStartInterval(_startOfInterval, _endOfInterval);
 
             var counter = 0;
@@ -49,7 +45,12 @@ namespace NumericalMethods.Lab1
                 counter++;
             }
 
-            return CalculateResult();
+            return new List<double> { CalculateResult() };
+        }
+
+        public virtual double CalculateResult()
+        {
+            return (_startOfInterval + _endOfInterval) / 2;
         }
 
         protected bool CheckSimplifiedStopCriteria()
