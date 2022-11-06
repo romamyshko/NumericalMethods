@@ -31,7 +31,7 @@ namespace NumericalMethods.Lab1
 
             for (var i = 0; i < _roots.Count; i++)
             {
-                var bisectionMethod = new BisectionMethod(_func, _roots[i] - 0.1, _roots[i] + 0.1, _epsilon);
+                var bisectionMethod = new SimplifiedNewtonsMethod(_func, _roots[i] - 0.1, _roots[i] + 0.1, _epsilon);
                 _roots[i] = bisectionMethod.GetRoot() ?? Double.NaN;
             }
 

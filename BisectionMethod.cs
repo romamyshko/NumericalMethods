@@ -27,7 +27,7 @@ namespace NumericalMethods.Lab1
 
         public override bool CheckMethodStopCriteria()
         {
-            return _function(base.CalculateMiddleOfInterval()) == 0 || base.CheckSimplifiedStopCriteria();
+            return Math.Abs(_function(base.CalculateMiddleOfInterval())) < _epsilon;
         }
     }
 }
